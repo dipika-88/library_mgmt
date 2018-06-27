@@ -24,7 +24,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  validates_presence_of :name, :email       
+  validates_presence_of :name, :if => Proc.new { |user| (user.role.eql?"user") }
+  validates_presence_of :email      
 
   ROLES = %w(user admin administrator).freeze
   enum role: ROLES  
