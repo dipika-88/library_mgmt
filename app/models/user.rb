@@ -14,27 +14,26 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
+#
 #  updated_at             :datetime         not null
 #  role                   :integer
-#
-
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  validates_presence_of :name, :if => Proc.new { |user| (user.role.eql?"user") }
-  validates_presence_of :email      
+  validates_presence_of :name
+  validates_presence_of :email
 
-  ROLES = %w(user admin administrator).freeze
-  enum role: ROLES  
+  ROLES = %w[user admin administrator].freeze
+  enum role: ROLES
 
   has_many :user_books, dependent: :destroy
   has_many :books, through: :user_books
 
-  def has_role?(requested_role)
-  return false unless role 
-   ROLES.index(requested_role.to_s) <= ROLES.index(role)
-  end  
+  def role?(requested_role)
+    return false unless role
+    ROLES.index(requested_role.to_s) <= ROLES.index(role)
+  end
 end

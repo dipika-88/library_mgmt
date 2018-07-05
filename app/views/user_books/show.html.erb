@@ -5,12 +5,12 @@
 
 <p>
   <strong>Issue Date:</strong>
-  <%= @user_book.issue_date %>
+  <%= @user_book.issue_date.to_s(:long) %>
 </p>
 
 <p>
   <strong>Return Date:</strong>
-  <%= @user_book.return_date %>
+  <%= @user_book.return_date.to_s(:long) if @user_book.return_date.present? %>
 </p>
 
 <p>

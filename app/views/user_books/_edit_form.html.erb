@@ -1,0 +1,26 @@
+<%= form_with(model: @user_book, local: true) do |form| %>
+  <% if @user_book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user_book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% @user_book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    Book Name: <%= @user_book.book.name %>
+  </div>
+
+  <div class="field">
+    Issued on: <%= @user_book.issue_date.to_s(:long) %>
+  </div>
+
+  <div class="actions">
+    <%= form.hidden_field :status %>
+    <%= form.submit %>
+  </div>
+<% end %>

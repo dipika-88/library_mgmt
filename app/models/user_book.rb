@@ -11,36 +11,28 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-
 class UserBook < ApplicationRecord
   belongs_to :user
   belongs_to :book
-
-  validates :book_id, presence: true
-
-  validate :books_quantity, on: :create
+  validate :books_quantity, on: :create, if: :book
   before_update :update_book_status
   after_commit  :update_books_count, on: [:create, :update]
-  
   enum status: [:issued, :returned]
 
   def update_book_status
-  	self.return_date =Time.now
-  	self.status = 1
-  end	
+    self.return_date = Time.now
+    self.status = 1
+  end
 
   def update_books_count
-  	if self.returned?
-  		self.book.increment!(:quantity)
-	else
-		self.book.decrement!(:quantity)
-	end
+    if returned?
+      book.increment!(:quantity)
+    else
+      book.decrement!(:quantity)
+    end
   end
 
   def books_quantity
-  	if self.book.quantity < 1
-		errors.add(:base, "Book is not available.")
-	end
-  end	
-
+    errors.add(:base, 'Book is not available.') if book.quantity < 1
+  end
 end

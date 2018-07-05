@@ -17,8 +17,8 @@
     <% @user_books.each do |user_book| %>
       <tr>
         <td><%= user_book.book.name %></td>
-        <td><%= user_book.issue_date %></td>
-        <td><%= user_book.return_date%></td>
+        <td><%= user_book.issue_date.to_s(:long) %></td>
+        <td><%= user_book.return_date.to_s(:long) if user_book.return_date.present?%></td>
         <td><%= user_book.status %></td>
         <td><%= link_to 'Show', user_book %></td>
         <td>
